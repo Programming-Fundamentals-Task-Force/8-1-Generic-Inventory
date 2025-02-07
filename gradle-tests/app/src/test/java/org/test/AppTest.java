@@ -1,39 +1,57 @@
 package org.test;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.util.List;
 
 import com.lab.*;
 
-class ClassTest {
-    private final PrintStream standardOut = System.out;
-    private final ByteArrayOutputStream outputStreamCapture = new ByteArrayOutputStream();
-
-    @BeforeEach
-    public void setUp() {
-        System.setOut(new PrintStream(outputStreamCapture));
+class InventoryTest {
+    @Test void
+    new_inventory_is_empty() {
+        Inventory<Double> inventory = new Inventory<>();
+        List<Double> items = inventory.getAll();
+        assertTrue(items.isEmpty());
     }
 
-    @Test
-    public void testOutput() {
-        Class object = new Class();
-        object.printSomething();
-        assertEquals(outputStreamCapture.toString().trim(), "expected output");
+    @Test void
+    items_can_be_added() {
+        Inventory<Integer> inventory = new Inventory<>();
+        inventory.add(10);
+        inventory.add(20);
+
+        assertTrue(inventory.contains(10));
+        assertTrue(inventory.contains(20));
+        assertFalse(inventory.contains(30));
     }
 
-    @Test
-    public void testEquality() {
-        Class object = new Class();
-        assertEquals(object.getValue(), "something");
+    @Test void
+    duplicated_items_are_added_only_once() {
+        Inventory<String> inventory = new Inventory<>();
+        inventory.add("Java Programming");
+        inventory.add("Data Structures");
+        inventory.add("Java Programming");
+
+        List<String> items = inventory.getAll();
+        assertEquals(2, items.size());
+        assertTrue(items.contains("Java Programming"));
+        assertTrue(items.contains("Data Structures"));
+    }
+}
+
+class DataProcessorTest {
+    @Test void
+    item_count_for_an_empty_list_must_be_zero() {
+        List<Integer> emptyList = List.of();
+        int count = DataProcessor.countItems(emptyList);
+        assertEquals(0, count);
     }
 
-    @AfterEach
-    public void tearDown() {
-        System.setOut(standardOut);
+    @Test void
+    item_count_must_equals_added_items() {
+        List<String> list = List.of("A", "B", "C");
+        int count = DataProcessor.countItems(list);
+        assertEquals(3, count);
     }
 }

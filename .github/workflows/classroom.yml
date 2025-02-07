@@ -39,33 +39,64 @@ jobs:
         command: mvn exec:java -Dexec.mainClass="com.lab.App" --quiet -f ${{ env.PROJECT_DIR }}/pom.xml
         input: ''
         expected-output: |-
-          Hello, world!
+          [Data Structures, Java Programming]
+          Total unique items: 2
         comparison-method: exact
         timeout: 10
         max-score: 20
-    - name: Unit test 1
+    - name: new_inventory_is_empty
       id: unit-test-1
       uses: classroom-resources/autograding-command-grader@v1
       with:
-        test-name: Unit test 1
+        test-name: new_inventory_is_empty
         setup-command: ''
-        command: "./gradle-tests/gradlew test --tests org.test.ClassTest.testOutput -p gradle-tests"
+        command: "./gradle-tests/gradlew test --tests org.test.InventoryTest.new_inventory_is_empty -p gradle-tests"
         timeout: 10
-        max-score: 40
-    - name: Unit test 2
+        max-score: 16
+    - name: items_can_be_added
       id: unit-test-2
       uses: classroom-resources/autograding-command-grader@v1
       with:
-        test-name: Unit test 2
+        test-name: items_can_be_added
         setup-command: ''
-        command: "./gradle-tests/gradlew test --tests org.test.ClassTest.testEquality -p gradle-tests"
+        command: "./gradle-tests/gradlew test --tests org.test.InventoryTest.items_can_be_added -p gradle-tests"
         timeout: 10
-        max-score: 40
+        max-score: 16
+    - name: duplicated_items_are_added_only_once
+      id: unit-test-3
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: duplicated_items_are_added_only_once
+        setup-command: ''
+        command: "./gradle-tests/gradlew test --tests org.test.InventoryTest.duplicated_items_are_added_only_once -p gradle-tests"
+        timeout: 10
+        max-score: 16
+    - name: item_count_for_an_empty_list_must_be_zero
+      id: unit-test-4
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: item_count_for_an_empty_list_must_be_zero
+        setup-command: ''
+        command: "./gradle-tests/gradlew test --tests org.test.DataProcessorTest.item_count_for_an_empty_list_must_be_zero -p gradle-tests"
+        timeout: 10
+        max-score: 16
+    - name: item_count_must_equals_added_items
+      id: unit-test-5
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: item_count_must_equals_added_items
+        setup-command: ''
+        command: "./gradle-tests/gradlew test --tests org.test.DataProcessorTest.item_count_must_equals_added_items -p gradle-tests"
+        timeout: 10
+        max-score: 16
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
         CONSOLE-OUTPUT_RESULTS: "${{ steps.console-output.outputs.result }}"
         UNIT-TEST-1_RESULTS: "${{ steps.unit-test-1.outputs.result }}"
         UNIT-TEST-2_RESULTS: "${{ steps.unit-test-2.outputs.result }}"
+        UNIT-TEST-3_RESULTS: "${{ steps.unit-test-3.outputs.result }}"
+        UNIT-TEST-4_RESULTS: "${{ steps.unit-test-4.outputs.result }}"
+        UNIT-TEST-5_RESULTS: "${{ steps.unit-test-5.outputs.result }}"
       with:
-        runners: console-output,unit-test-1,unit-test-2
+        runners: console-output,unit-test-1,unit-test-2,unit-test-3,unit-test-4,unit-test-5
