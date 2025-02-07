@@ -45,7 +45,7 @@ The Maven project has already been created for you. The package name is `com.lab
     - `boolean contains(T item)`: Returns `true` if the item exists in the inventory, otherwise `false`.
     - `List<T> getAll()`: Returns all stored items as an `ArrayList<T>` (converted from `HashSet<T>`).
 
-- Class: `DataProcessor` (Utility Class)
+- Class: `DataProcessor` (utility class)
   - Implements the generic method:
     - `public static <T> int countItems(Collection<T> collection)`
       - Accepts any `Collection<T>` as an argument.
